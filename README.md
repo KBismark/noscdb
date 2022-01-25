@@ -14,9 +14,9 @@ NoscDB is non-blocking, which makes it even faster at handling your database req
 # How data is stored
 NoscDB saves data in separate files for each data. NoscDB does not store or keep all data in one master file or flat-file. Each data is a separate entity that is stored in a separate file with a pathname that corresponds or gives information about the database, table, or row it belongs to. This system of organizing your data allows for fast and quick way of upating, deleting or accessing data 
 # FS Module  
-NoscDB has an in-built fs-manager that changes the behaviour of the fs methods it will be using to perform operations.
+NoscDB has an in-built fs-manager that changes the behaviour of the fs methods it uses to perform operations.
 Thus, problems that usually occur when writing, reading, deleting, etc. of the same file at the same time is handled professionally by the fs-manager, which prevents such problems from occurring at all.
-# NoscDB at it request peak 
+# NoscDB at it's request peak 
 Generally, more requests to access the same data at the same time in a single threaded nodejs is slow or generates errors because you are trying to access an already opened file to perform another operation on that same file at that same time (ASYNCHRONOUS MODE).   
 However, this is when NoscDB is at it's best. Among the many requsts to operate on the same data (file), only one operation is performed but all the requests (whether deleting, updating, reading, etc) are served correctly. NoscDB merges all those requests to become one, executes the merged request and send feedback to the various request handlers.  
 Moreover, NoscDB has an option to choose the maximum separate files thst should be opened simultaneously (in parrallel) to prevent possible EMFILE errors.   
