@@ -1,5 +1,5 @@
 # noscdb
-A fast nodejs database built with real-time applications needs in mind.    
+A fast nodejs database system built with real-time applications needs in mind.    
 
 # About    
 NoscDB was created by [Yamoah Bismark.](https:github.com/KBismark)    
@@ -18,8 +18,11 @@ NoscDB has an in-built fs-manager that changes the behaviour of the fs methods i
 Thus, problems that usually occur when writing, reading, deleting, etc. of the same file at the same time is handled professionally by the fs-manager, which prevents such problems from occurring at all.
 # NoscDB at its request peak 
 Generally, more requests to access the same data (file) at the same time in a single threaded nodejs is slow or generates errors because you are trying to access an already opened file to perform another operation on that same file at that same time (ASYNCHRONOUS MODE).   
+
 However, this is when NoscDB is at its best. Among the many requsts to operate on the same data (file), only one operation is performed but all the requests (whether deleting, updating, reading, etc) are served correctly. NoscDB merges all those requests to become one, executes the merged request and send feedback to the various request handlers.  
-Moreover, NoscDB has an option to choose the maximum separate files thst should be opened simultaneously (in parrallel) to prevent possible EMFILE errors.   
+
+Moreover, NoscDB has an option to choose the maximum separate files that should be opened simultaneously (in parrallel) to prevent possible EMFILE errors.   
+
 Again, there is an option to make NoscDB use your preferred fs module replacement.
 
 
