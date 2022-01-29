@@ -1,0 +1,31 @@
+{
+  "name": "noscdb",
+  "version": "0.1.1",
+  "description": "A fast nodejs database system built with real-time applications needs in mind.",
+  "main": "./lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KBismark/noscdb/tree/fun/noscdb.git"
+  },
+  "keywords": [
+    "noscdb",
+    "nodejs-database",
+    "noscdb-server",
+    "noscdb-client",
+    "fs-database",
+    "hybrid-database"
+  ],
+  "author": "Yamoah Bismark <bismarkkwabenayamoah@gmail.com",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/KBismark/noscdb/issues",
+    "email":"bismarkkwabenayamoah@gmail.com"
+  },
+  "homepage": "https://github.com/KBismark/noscdb#readme"
+}
