@@ -2,7 +2,7 @@
 First hybrid nodejs database system built with real-time applications needs in mind.    
 
 # About    
-NoscDB was created by [Yamoah Bismark.](https:github.com/KBismark)    
+NoscDB was created by [Yamoah Bismark.]()    
 
 NoscDB was created as a quick solution to save myself from learning MySQL when I needed to test a simple web app I created while learning web development with nodejs.    
 Initially, NoscDB was created to store data in arrays until I decided to make it a project to work on. In the decision, I was to make the data stored in arrays persist even if my localhost server is stopped from execution. The core nodejs FS module was/is obviously the first and last option to me. Since then (February 2021), NoscDB has gone through several stages of writing and testing privately. So far, NoscDB has proved to be working as expected until you also try it and find a new bug to be fixed. 
@@ -79,7 +79,7 @@ Let's assume you have 1000 rows in a table and you request to get the data for e
 There's never been any database system that gives you more control over **everything** except NoscDB. NoscDB is very simple to understand and to modify the whole database system to meet your needs.
 
 # Simple and easy to learn
-The NoscDB project was started by [Yamoah Bismark](https:github.com/KBismark), when he began to learn nodejs so it's very begginer friendly to both nodejs developers and non nodejs developers. It is also entirely written in javascript and runs in Javascript-Nodejs environment so even if you have less knowledge in nodejs, NoscDB will be so easy for you to learn.     
+The NoscDB project was started by a nodejs beginner so it's very beginner friendly to both nodejs developers and non-nodejs developers. It is also entirely written in javascript and runs in Javascript-Nodejs environment so even if you have less knowledge in nodejs, NoscDB will be so easy for you to learn.     
 Again, it uses self-explained method names like `getRow`, `updateRow`, etc, which makes codes very easy to read and follow.
 
 # Scale in any direction
