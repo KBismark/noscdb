@@ -11,7 +11,7 @@ Using npm:
 Using yarn:   
  `yarn add noscdb`
 
-If NoscDB will be running on a separate server from your application, install the `noscdb-client` module and the `noscdb-server` module. See [NoscDB-Client](https://) and [NoscDB-Server](https://) for more on how to install and documentaion.
+If NoscDB will be running on a separate server from your application, install the `noscdb-client` module and the `noscdb-server` module. See [NoscDB-Client](https://github.com/KBismark/noscdb/tree/fun/client) and [NoscDB-Server](https://github.com/KBismark/noscdb/tree/fun/server) for more on how to install and documentaion.
 
 # USAGE 
 NoscDB has some handful methods that would help you start using it to handle your data. More amazing features would be added as they become available.
