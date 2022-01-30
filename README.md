@@ -95,7 +95,7 @@ NoscDB allows you to scale your database in all directions. NoscDB actually brin
 If you need more of the above features to handle your data, increase your NoscDB servers to as many as you will need and connect them all to your single application. It's so easy and simple. NoscDB has methods to help you with that.
 
 - NoscDB can run in your application, that is, you don't need a separate server from your app to host NoscDB
--NoscDB can run on a separate server (NoscDB Server is a server that runs only NoscDB in order to get access to all resources to handle your data effectively and effeciently to ensure fast operations and high perfomance)
+- NoscDB can run on a separate server (NoscDB Server is a server that runs only NoscDB in order to get access to all resources to handle your data effectively and effeciently to ensure fast operations and high perfomance)
 - A NoscDB server can serve several applications
 - Your application can connect to several NoscDB servers   
 - You can build a network of NoscDB servers to communicate to each other and even to communicate with several of your applications (*not just a single app*).
