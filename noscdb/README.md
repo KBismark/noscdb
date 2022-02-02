@@ -1,5 +1,5 @@
-# noscdb
-This is the core module of the NoscDB project. 
+<h1 align="center"> noscdb </h1>
+<p align="center"> <strong > This is the core module of the NoscDB project. </strong> </p>
 
 # Installing
 Install this module only if you will be running NoscDB alongside your application on the same server.    
