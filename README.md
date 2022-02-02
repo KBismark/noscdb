@@ -1,4 +1,3 @@
-<h1 align="center"> NOSCDB </h1>
 <p align="center">
   <div align="center"><img src="https://raw.githubusercontent.com/KBismark/noscdb/fun/assets/ndbs1.png"></div>
   <div align="center">
