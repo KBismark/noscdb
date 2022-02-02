@@ -1,5 +1,8 @@
-# noscdb
-First hybrid nodejs database system built with real-time applications needs in mind.    
+<h1 align="center"> NOSCDB </h1>
+<p align="center">
+First hybrid nodejs database system built with real-time applications needs in mind. 
+  <img src="https://raw.githubusercontent.com/KBismark/noscdb/fun/assets/ndbs1.png">
+</p>
 
 # About    
 NoscDB was created by [Yamoah Bismark.](https://github.com/KBismark)    
