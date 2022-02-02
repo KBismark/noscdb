@@ -1,4 +1,4 @@
-<h1 align="center"> noscdb </h1>
+<h1 align="center">noscdb</h1>
 <p align="center"> <strong > This is the core module of the NoscDB project. </strong> </p>
 
 # Installing
@@ -529,7 +529,7 @@ This method gets all rows in a table. It takes only the table's name as argument
 >
 >   var db = ndb.createDatabase(path);
 >   var get = db.getAllRows("table_name");
->   get.onend(function(data){
+>   get.onend(function(){
 >       // do something after data retreival
 >   }).onend(function(){
 >       // do another thing after data retreival
@@ -613,7 +613,6 @@ This method gets all rows in a table. It takes only the table's name as argument
 >
 >   var db = ndb.createDatabase(path);
 >   var get = db.getAllRows("table_name");
->   // Sorts by id in descending order
 >   get.selectIdStartingWith("some value");
 >
 > ```
@@ -683,7 +682,7 @@ This method gets all rows in a dispersed table. It takes only the table's name a
 >
 >   var db = ndb.createDatabase(path);
 >   var get = db.getAllRows("table_name");
->   get.onend(function(data){
+>   get.onend(function(){
 >       // do something after data retreival
 >   }).onend(function(){
 >       // do another thing after data retreival
@@ -767,7 +766,6 @@ This method gets all rows in a dispersed table. It takes only the table's name a
 >
 >   var db = ndb.createDatabase(path);
 >   var get = db.getAllRows("table_name");
->   // Sorts by id in descending order
 >   get.selectIdStartingWith("some value");
 >
 > ```
@@ -802,8 +800,443 @@ This method gets all rows in a dispersed table. It takes only the table's name a
 >
 
 ### readFromDispersedStorage
-Reads data from a dispersed storage. A dispersed storage is a storage space that comes with every dispersed row that 
+Reads data from a dispersed storage. A **dispersed storage** is a storage space that comes with every dispersed row that 
 you create. These storage spaces are the **storageColumns** you provide when creating a dispersed table. They become the 
-storage directory for frequent data flows like chat messages in every row that you create in that table. 
+storage directory for frequent data flows like chat messages in every row that you create in that table. Such data are stored by NoscDB with respect to time and hence, would be retreived in that manner. When retreiving such data, you will have to specify the time and date range to read data from. Example, you may choose to read data from January to December in a particular year. 
 
+This method takes two arguments: An accessing object and an error callback that is called only if an error occurs before 
+data retreival. It also returns an object with methods and properties to handle how data is read from storage.     
+
+- **Object methods and properties**:
+    - **tablename**: The name of the table to access. **Value Type: string**
+    - **id**: The identifier of the row to access. **Value Type: string**
+    - **storageColumn**: The name of the storage column to read data from. **Value Type: string**    
+
+- **errorCallback**: A function that is executed only if an error occurs before data retreival.    
+
+> #### Returned object's methods
+> This object's methods are chainable. 
+> #### date
+> This method **must** be called always. Tell the date to retreive data from. It takes three arguments:
+>
+> - **yr**: The `yr` must always be a `number` corresponding to the year from which to retreive data. `Required`
+>   
+> - **month**: The `month` is either a `number` corresponding to the month in which data is to be retreived or an `object` with two properties; `from`: the start month and `to`: the end month from which data is to be retreived **RANGE: `1-12`|`12-1` January to December or vice versa.** `Required`      
+> The range `{from:1,to:12}` conforms to the `FIFO()` method and `{from:12,to:1}` conforms to the `LIFO()` method.   
+>
+> - **day**: The `day` is either a `number` corresponding to the day in which data is to be retreived or an `object` with two properties; `from`: the start day and `to`: the end day from which data is to be retreived. **RANGE: `1-31`|`31-1`** `Required`    
+> The range `{from:1,to:31}` conforms to the `FIFO()` method and `{from:31,to:1}` conforms to the `LIFO()` method.   
+>
+> ```js
+>   var ndb = require('noscdb'); 
+>   ndb.sync = true; 
+>   const path = "A DIRECTORY PATH";
+>
+>   var db = ndb.createDatabase(path);
+>   var read = db.readFromDispersedStorage({
+>       tablename: "table_name",
+>       id: "row_id",
+>       storageColumn: "storage_column_name"
+>   },function(err){
+>       // do something if an error occurs   
+>       console.log(err);   
+>   });
+>
+>   // Read from the year 2021 - YEAR
+>   // Read from February to January backwards - MONTH
+>   // Read only the 8th day in these months - DAY
+>   read.date(2021,{from:2,to:1},8);
+>
+> ```
+>   **How you read your data from a dispersed storage is very flexible. Read however you want your data.**
+>
+> #### time
+> Tell the time to retreive data from. It takes three arguments:
+>
+> - **hour**: The `hour` must always be a `number` corresponding to the hour from which to retreive data. **RANGE: `0-23` [Uses the 24-Hour format]**
+>  
+> - **min**: The `min` is either a `number` corresponding to the minute in which data is to be retreived or an `object` with two properties; `from`: the start minute and `to`: the end minute from which data is to be retreived **RANGE: `0-59`**   
+>
+> - **sec**: The `sec` is either a `number` corresponding to the second in which data is to be retreived or an `object` with two properties; `from`: the start second and `to`: the end second from which data is to be retreived. **RANGE: `0-59`**     
+>
+> ```js
+>   var ndb = require('noscdb'); 
+>   ndb.sync = true; 
+>   const path = "A DIRECTORY PATH";
+>
+>   var db = ndb.createDatabase(path);
+>   var read = db.readFromDispersedStorage({
+>       tablename: "table_name",
+>       id: "row_id",
+>       storageColumn: "storage_column_name"
+>   },function(err){
+>       // do something if an error occurs   
+>       console.log(err);   
+>   });
+>
+>   // Read from the year 2021 - YEAR
+>   // Read from February to January backwards - MONTH
+>   // Read only the 8th day in these months - DAY
+>   read.date(2021,{from:2,to:1},8);
+>
+>   // Read from the first 12 hours in each day - HOUR
+>   // Read only the third minute in each hour - MINUTE
+>   // Read from the 15th second to the 30th second - SECOND
+>   read.time({from:0,to:11},3,{from:15,to:30}); // To read backwards, call the LIFO() method
+>   
+> ```
+>   **How you read your data from a dispersed storage is very flexible. Read however you want your data.**
+>
+> #### FIFO
+> Data is retreived in ascending order with respect to the time stored in database. It uses a First-In-First-Out approach to retreive data. This is the default behaviour. The `FIFO()` and `LIFO()` are mutualy exclusive methods. The last method called is always chosen.
+>
+> ```js
+>   var ndb = require('noscdb'); 
+>   ndb.sync = true; 
+>   const path = "A DIRECTORY PATH";
+>
+>   var db = ndb.createDatabase(path);
+>   var read = db.readFromDispersedStorage({
+>       tablename: "table_name",
+>       id: "row_id",
+>       storageColumn: "storage_column_name"
+>   },function(err){
+>       // do something if an error occurs   
+>       console.log(err);   
+>   });
+>
+>   // Read from the year 2021 - YEAR
+>   // Read from February to January backwards - MONTH
+>   // Read only the 8th day in these months - DAY
+>   read.date(2021,{from:2,to:1},8);
+>
+>   // Read from the first 12 hours in each day - HOUR
+>   // Read only the third minute in each hour - MINUTE
+>   // Read from the 15th second to the 30th second - SECOND
+>   read.time({from:0,to:11},3,{from:15,to:30}); // To read backwards, call the LIFO() method
+>   
+>   // Reading with the FIFO method
+>   read.FIFO();
+>   
+> ```
+>   **How you read your data from a dispersed storage is very flexible. Read however you want your data.**
+>
+> #### LIFO
+> Data is retreived in descending order with respect to the time stored in database. It uses a Last-In-First-Out approach to retreive data. The `LIFO()` and `FIFO()` are mutualy exclusive methods. The last method called is always chosen.
+>
+> ```js
+>   var ndb = require('noscdb'); 
+>   ndb.sync = true; 
+>   const path = "A DIRECTORY PATH";
+>
+>   var db = ndb.createDatabase(path);
+>   var read = db.readFromDispersedStorage({
+>       tablename: "table_name",
+>       id: "row_id",
+>       storageColumn: "storage_column_name"
+>   },function(err){
+>       // do something if an error occurs   
+>       console.log(err);   
+>   });
+>
+>   // Read from the year 2021 - YEAR
+>   // Read from February to January backwards - MONTH
+>   // Read only the 8th day in these months - DAY
+>   read.date(2021,{from:2,to:1},8);
+>
+>   // Read from the first 12 hours in each day - HOUR
+>   // Read only the third minute in each hour - MINUTE
+>   // Read from the 15th second to the 30th second - SECOND
+>   read.time({from:0,to:11},3,{from:15,to:30}); // To read backwards, call the LIFO() method
+>   
+>   // Reading with the LIFO method
+>   read.LIFO();
+>   
+> ```
+>   **How you read your data from a dispersed storage is very flexible. Read however you want your data.**
+>
+> #### ondata
+> Register listeners to be called when data is retreived. All listeners passed as argument to this method are executed anytime data is retrieved. Until at least one listener is registered for this event, the `readFromDispersedStorage` operation is not executed. The data is retreived in **arrays**, which contains all the data that well stored in the storage space in the same second.
+>
+> ```js
+>   var ndb = require('noscdb'); 
+>   ndb.sync = true; 
+>   const path = "A DIRECTORY PATH";
+>
+>   var db = ndb.createDatabase(path);
+>   var read = db.readFromDispersedStorage({
+>       tablename: "table_name",
+>       id: "row_id",
+>       storageColumn: "storage_column_name"
+>   },function(err){
+>       // do something if an error occurs   
+>       console.log(err);   
+>   });
+>
+>   // Read from the year 2021 - YEAR
+>   // Read from February to January backwards - MONTH
+>   // Read only the 8th day in these months - DAY
+>   read.date(2021,{from:2,to:1},8);
+>
+>   // Read from the first 12 hours in each day - HOUR
+>   // Read only the third minute in each hour - MINUTE
+>   // Read from the 15th second to the 30th second - SECOND
+>   read.time({from:0,to:11},3,{from:15,to:30}); // To read backwards, call the LIFO() method
+>   
+>   // Reading with the LIFO method
+>   read.LIFO();
+>
+>   // Handle data events
+>   // Data here is an array of all data stored in the same second. 
+>   read.ondata(function(data){
+>       if(data){
+>           // do something with data     
+>       }
+>   });
+>   read.ondata(function(data){
+>       if(data){
+>           // do another thing with data     
+>       }
+>   });
+>
+> ```
+>   **How you read your data from a dispersed storage is very flexible. Read however you want your data.**
+>
+> #### onend
+> Register listeners to be called when data is retreived. All listeners passed as argument to this method are executed after data retreival. 
+>
+> ```js
+>   var ndb = require('noscdb'); 
+>   ndb.sync = true; 
+>   const path = "A DIRECTORY PATH";
+>
+>   var db = ndb.createDatabase(path);
+>   var read = db.readFromDispersedStorage("table_name");
+>
+>   // Read from the year 2021 - YEAR
+>   // Read from February to January backwards - MONTH
+>   // Read only the 8th day in these months - DAY
+>   read.date(2021,{from:2,to:1},8);
+>
+>   // Read from the first 12 hours in each day - HOUR
+>   // Read only the third minute in each hour - MINUTE
+>   // Read from the 15th second to the 30th second - SECOND
+>   read.time({from:0,to:11},3,{from:15,to:30}); // To read backwards, call the LIFO() method
+>   
+>   // Reading with the LIFO method
+>   read.LIFO();
+>
+>   // Handle data events
+>   // Data here is an array of all data stored in the same second. 
+>   read.ondata(function(data){
+>       if(data){
+>           // do something with data     
+>       }
+>   });
+>   read.ondata(function(data){
+>       if(data){
+>           // do another thing with data     
+>       }
+>   });
+>
+>   // Handle end event
+>   read.onend(function(){
+>       // do something after data retreival
+>   }).onend(function(){
+>       // do another thing after data retreival
+>   });
+>
+> ```
+>   **How you read your data from a dispersed storage is very flexible. Read however you want your data.**
+>
+> #### limit
+> Determine the `number of seconds` to retreive written data from the `date()` and `time()` specified. It takes only 
+one argument: A limitting object.
+> - **limObject.start**: Number or Undefined. `Default` is 1, which is the first second data was written within the time range specified.
+> - **limObject.end**: Number or Undefined. `Default` is the number of times (seconds) data was written in the `date()` and `time()` specified, which is the last second data was written within the time range specified. 
+>
+> **TIP**: `'number of seconds'` is not equal to `'number of data read'`
+>
+> ```js
+>   var ndb = require('noscdb'); 
+>   ndb.sync = true; 
+>   const path = "A DIRECTORY PATH";
+>
+>   var db = ndb.createDatabase(path);
+>   var read = db.readFromDispersedStorage("table_name");
+>   read.limit({
+>       start: 4, // starts retreiving data from the 4th second in the selected data to read 
+>       end: 9 // ends retreiving data at the 9th second in the selected data to read 
+>   });
+>
+> ```
+>   **How you read your data from a dispersed storage is very flexible. Read however you want your data.**
+>
+> #### end
+> Ends data retreival manually.
+> ```js
+>   var ndb = require('noscdb'); 
+>   ndb.sync = true; 
+>   const path = "A DIRECTORY PATH";
+>
+>   var db = ndb.createDatabase(path);
+>   var read = db.readFromDispersedStorage("table_name");
+>   // Data here is an array of all data stored in the same second. 
+>   read.ondata(function(data){
+>       if(data){
+>           for(var i=0;i<data.length;i++){
+>               if(i>=5){
+>                   read.end();
+>               }
+>               // do something with data[i]
+>           }
+>       }
+>   });
+>
+> ```
+>   **How you read your data from a dispersed storage is very flexible. Read however you want your data.**
+>
+> #### withTime
+> Adds the `$time` property to each data in the data array. The `$time` property is an object with the time data was created info. The `withTime()` and `withTimeStamp()` are mutualy exclusive methods. The last method called is always chosen.
+>
+> ```js
+>   var ndb = require('noscdb'); 
+>   ndb.sync = true; 
+>   const path = "A DIRECTORY PATH";
+>
+>   var db = ndb.createDatabase(path);
+>   db.readFromDispersedStorage("table_name").withTime();
+>
+> ```
+>   **How you read your data from a dispersed storage is very flexible. Read however you want your data.**
+>
+> #### withTimeStamp
+> Adds the `$timestamp` property to each data in the data array. The `$timestamp` property is a string with the time data was created info. The `withTimeStamp()` and `withTime()` are mutualy exclusive methods. The last method called is always chosen.
+>
+> ```js
+>   var ndb = require('noscdb'); 
+>   ndb.sync = true; 
+>   const path = "A DIRECTORY PATH";
+>
+>   var db = ndb.createDatabase(path);
+>   db.readFromDispersedStorage("table_name").withTimeStamp();
+>
+> ```
+>   **How you read your data from a dispersed storage is very flexible. Read however you want your data.**
+>
+> #### startFrom
+> Set the date and time from which to start reading data. The data is read from the date object (inclusive) passed as argument. **TIP:** *Pass the* `last_data_read_date` *object to this method to continue reading data from where you previously left.*
+>
+> ```js
+>   var ndb = require('noscdb'); 
+>   ndb.sync = true; 
+>   const path = "A DIRECTORY PATH";
+>
+>   var db = ndb.createDatabase(path);
+>   var read = db.readFromDispersedStorage("table_name");
+>   // Continue readind data from this date in the date and time you specified.
+>   read.startFrom({month:5,day:18,hour:7,minute:32,second:3});
+>
+> ```
+>   **How you read your data from a dispersed storage is very flexible. Read however you want your data.**
+>
+
+### writeToDispersedStorage
+This method writes data to a dispersed storage column. All data to be written at a specific time (second) is merged and stored in the same file. Data is stored with respect to the time (second) `writeToDispersedstorage()` is called and would also be retreived in the same manner if `readFromDispersedStorage()` is called. It takes two arguments: An object with the data to write and the table name, id and the storage column to write to and a callback.   
+- **object**:
+    -  **tablename**: The name of the table to access **Value Type: string**
+    - **id**: The identifier to row to access. **Value Type: string**
+    - **storageColumn**: The storage column to access. **Value Type: string**
+    - **data**: This is your data to store. **Value Type: JSON serializable**
+
+- **callback**: This is a function that executes after writing to dispersed storage. This callback will be passed a unique string (dataId) to your data in the storage. This **dataId** is required if you want to access this data directly for updates, retreival and deletion. 
+
+```js
+    var ndb = require('noscdb'); 
+    ndb.sync = true; 
+    const path = "A DIRECTORY PATH";
+    var db = ndb.createDatabase(path);
+
+    db.writeToDispersedStorage({
+        tablename: "table_name",
+        id: "row_id",
+        storageColumn: "storage_column_name",
+        data: "your-data" // Must be JSON serializable
+    },function(dataId){
+        // If no error occurs, key is a string else null
+        if(typeof(dataId)==="string"){
+            // Data is stored successfully
+
+        }
+    });
+
+```
+
+### delDispersedStorageData
+Deletes data stored in a dispersed storage.
+
+```js
+    var ndb = require('noscdb'); 
+    ndb.sync = true; 
+    const path = "A DIRECTORY PATH";
+    var db = ndb.createDatabase(path);
+
+    db.delDispersedStorageData({
+        tablename: "table_name",
+        id: "row_id",
+        storageColumn: "storage_column_name",
+        dataId: "the data_id to your data" 
+    },function(deleted){
+        if(deleted){
+            console.log("Your data is succesfully deleted from storage");
+        }
+    });
+
+```
+
+### getDispersedStorageData
+Retreives data stored in a dispersed storage.
+
+```js
+    var ndb = require('noscdb'); 
+    ndb.sync = true; 
+    const path = "A DIRECTORY PATH";
+    var db = ndb.createDatabase(path);
+
+    db.getDispersedStorageData({
+        tablename: "table_name",
+        id: "row_id",
+        storageColumn: "storage_column_name",
+        dataId: "the data_id to your data" 
+    },function(data){
+        if(data){
+            // Do something with data
+            console.log(data);
+        }
+    });
+
+```
+
+### updateDispersedStorageData
+Updates (overwrites) existing data in a dispersed storage.
+
+```js
+    var ndb = require('noscdb'); 
+    ndb.sync = true; 
+    const path = "A DIRECTORY PATH";
+    var db = ndb.createDatabase(path);
+
+    db.updateDispersedStorageData({
+        tablename: "table_name",
+        id: "row_id",
+        storageColumn: "storage_column_name",
+        dataId: "the data_id to your data",
+        data: "your-data" // Must be JSON serializable
+    },function(updated){
+        if(updated){
+            console.log("Your data is succesfully updated");
+        }
+    });
+
+```
 
