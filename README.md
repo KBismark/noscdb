@@ -1,7 +1,9 @@
 <h1 align="center"> NOSCDB </h1>
 <p align="center">
-First hybrid nodejs database system built with real-time applications needs in mind. 
-  <img src="https://raw.githubusercontent.com/KBismark/noscdb/fun/assets/ndbs1.png">
+  <div align="center"><img src="https://raw.githubusercontent.com/KBismark/noscdb/fun/assets/ndbs1.png"></div>
+  <div align="center">
+  <strong>First hybrid nodejs database system built with real-time applications needs in mind.</strong>
+</div> 
 </p>
 
 # About    
