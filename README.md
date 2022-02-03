@@ -5,6 +5,76 @@
 </div> 
 </p>
 
+> ### Your app server
+> ```js
+> // Require NoscDB Client
+> const ndbc = require("noscdb-client");
+> const noscdbServerConnection = {
+>     port:8764,
+>     host:"localhost"
+> };
+> // Connect to your NoscDB Server
+> ndbc.createConnection(noscdbServerConnection,function(err,db){
+>       if(err){console.log(err); return;}
+>       const myDatabase1 = {
+>           name:"database_name",
+>           tables:{
+>               users:{
+>                   name:"users",
+>                   db_name:"database_name",
+>                   columns: [
+>                       "name",
+>                       "age",
+>                       "continent"
+>                   ]
+>               }
+>           }
+>       };
+>       db.createDatabase(myDatabase1.name,function(err,created){
+>           if(err){console.log(err);}
+>           db.createTable(myDatabase1.tables.users,function(err,created){
+>               if(err){console.log(err);}
+>               // Create a row in your users table
+>               db.createRow(myDatabase1.name,myDatabase1.tables.users.name,"1",{
+>                   name:"John",
+>                   age:28,
+>                   continent:"Europe"
+>               },function(err,created){
+>                   if(err){console.log(err);}
+>               });
+>               
+>               // Create another row in your users table
+>               db.createRow(myDatabase1.name,myDatabase1.tables.users.name,"2",{
+>                   name:"Nana",
+>                   age:24,
+>                   continent:"Africa"
+>               },function(err,created){
+>                   if(err){console.log(err);}
+>               });
+>           });
+>       });
+> },"%$n&%");
+> 
+> ```
+> 
+> ### Your NoscDB Server
+> ```js
+>   // Require NoscDB Server
+>   const ndbs = require("noscdb-server");
+>   ndbs.PATH="YOUR DATA STORAGE DIRECTORY"; // Set to an existing directory path
+>   ndbs.clients=["::ffff:127.0.0.1"]; // Allow access to NoscDB Server from your app's server
+>   ndbs.splitter="%$n&%";
+>   
+>   // Run your NoscDB Server
+>   ndbs.run(function(server){
+>       server.listen(8764,()=>{
+>           console.log("NoscDB Server Listening...");
+>           
+>       });
+>   });
+>   
+> ```
+
 # About    
 Created by [Bismark Yamoah.](https://github.com/KBismark)    
 
