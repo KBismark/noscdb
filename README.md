@@ -6,7 +6,7 @@
 </p>
 
 # About    
-NoscDB was created by [Yamoah Bismark.](https://github.com/KBismark)    
+Created by [Bismark Yamoah.](https://github.com/KBismark)    
 
 NoscDB was created as a quick solution to save myself from learning MySQL when I needed to test a simple web app I created while learning web development with nodejs.    
 Initially, NoscDB was created to store data in arrays until I decided to make it a project to work on. In the decision, I was to make the data stored in arrays persist even if my localhost server is stopped from execution. The core nodejs FS module was/is obviously the first and last option to me. Since then (February 2021), NoscDB has gone through several stages of writing and testing privately. So far, NoscDB has proved to be working as expected until you also try it and find a new bug to be fixed. 
