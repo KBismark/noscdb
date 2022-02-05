@@ -21,7 +21,7 @@
     "fs-database",
     "hybrid-database"
   ],
-  "author": "Yamoah Bismark <bismarkkwabenayamoah@gmail.com",
+  "author": "Yamoah Bismark <bismarkkwabenayamoah@gmail.com>",
   "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/KBismark/noscdb/issues",
